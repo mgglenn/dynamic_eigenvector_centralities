@@ -55,7 +55,7 @@ def build_args():
 
 	parser.add_argument("--P", help="Number of intervals to calculate DEC from.", type=int, default=5)
 
-	parser.add_argument("--log_file", help="File to write output to.", type=str, default="log.txt")
+	parser.add_argument("--log_file", help="File to write output to.", type=str, default=None)
         
 	# parser.add_argument("-v", "--verbosity", help="Prints various log messages", type=bool)
 
@@ -102,7 +102,8 @@ if __name__ == "__main__":
 	# argument parsing and some small format-checking
 	args = build_args()
 
-	sys.stdout = open(args.log_file, 'w')
+	if args.log_file:
+	    sys.stdout = open(args.log_file, 'w')
 
 	if len(args.output_folder):
 		if args.output_folder[-1] != '/':

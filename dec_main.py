@@ -47,9 +47,9 @@ def build_args():
 	"""
 	parser = argparse.ArgumentParser()
 	parser.add_argument("--input_folder",\
-						help="Location of the folder where your (numbered/ordered) interval files are.", 
-						type=str,
-						default="intervals/")
+			    help="Location of the folder where your (numbered/ordered) interval files are.",\
+			    type=str,\
+			    default="intervals/")
 
 	parser.add_argument("--output_folder", help="location of output files", type=str, default='dec_vals/')
 
@@ -80,14 +80,14 @@ def calculate_DEC(P=5, input_files=[], output_folder=''):
 		# decrease edges, remove zero-weight edges and zero-degree nodes
 		bucket_index = interval % P
 		deleted = dec_graph.decrease_edge_weights_update_graph(G=G,\
-													current_bucket=buckets[bucket_index],\
-													ec_windows=ec_windows)
+					current_bucket=buckets[bucket_index],\
+							ec_windows=ec_windows)
 
 		# read in text from interval, update edge weights and node degrees 
 		text = dec_text.get_text_from_file(file=f, stopwords=stopwords)
 		dec_graph.update_graph_with_text(G=G,\
-										text=text,\
-										current_bucket=buckets[bucket_index])
+					    text=text,\
+					    current_bucket=buckets[bucket_index])
 
 		print("\tNum Keywords: %d" % len(G))
 
@@ -115,7 +115,5 @@ if __name__ == "__main__":
 			args.input_folder += '/'
 			print(args.input_folder)
 
-
 	input_files = get_files(file_folder=args.input_folder)
-
 	calculate_DEC(input_files=input_files, P=args.P, output_folder=args.output_folder)

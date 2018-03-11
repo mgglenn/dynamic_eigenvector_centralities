@@ -112,7 +112,7 @@ def update_ec_windows(G=None, ec_windows=None, P=5, weight='weight', normalize=T
 
 	for word, ec_val in ecentrality.items():
 		window = ec_windows.setdefault(word, deque())
-		if len(window)>=P:
+		if len(window)>=P-1:
 			window.popleft()
 		window.append(ecentrality[word])
 		ec_windows[word] = window

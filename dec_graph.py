@@ -24,7 +24,7 @@ def decrease_edge_weights_update_graph(G=None, current_bucket=None, ec_windows=N
 	measures we use for computing DEC values. If we delete a node from the Graph
 	we'll delete it from our windows, too.
 
-	:returns: deleted_words - list of words we removed
+	:returns: deleted_words, the list of words we removed
 	"""
 	deleted_words = []
 	for edge, bucket_weight in current_bucket.items():
@@ -54,6 +54,10 @@ def decrease_edge_weights_update_graph(G=None, current_bucket=None, ec_windows=N
 def update_graph_with_text(G=None, text=[], current_bucket=None):
 	"""
 	Take a graph, G, and for each tweet in text, update pairs.
+	:param G: current Graph object
+	:param text: list of tweets
+	:param current_bucket: the dictonary for tracking co-occurences.
+	:returns: None, just updates bucket and graph.
 	"""
 	for tweet_words in text:
 		for i in range(0, len(tweet_words)):
@@ -76,6 +80,7 @@ def update_graph_with_edge(G=None, word1='', word2=''):
 	:param word1: one word in your edge
 	:param word2: other word
 	:param G: graph to update
+	:returns edge:
 	"""
 	if word1 < word2:
 		edge = word1 + "," + word2
@@ -102,6 +107,15 @@ def initialize_buckets(P=5):
 
 
 def update_ec_windows(G=None, ec_windows=None, P=5, weight='weight', normalize=True):
+	"""
+	We calculate dynamic ec's by using the last P ec values.
+	:param G: graph
+	:param ec_windows: a dictionary with the last P ec values for each word
+	:param weight:
+	:param normalize: 
+	:returns ecentrality, the current ecentrality for each word
+	:side effect: updates ec_windows with most recent P values.
+	"""
 	ecentrality = nx.eigenvector_centrality(G, weight=weight)
 
 	if normalize:
@@ -121,6 +135,9 @@ def update_ec_windows(G=None, ec_windows=None, P=5, weight='weight', normalize=T
 
 
 def calculate_slope(x, y):
+	"""
+	Simply calculates linear slope (a bit leaner than the library implementation).
+	"""
         try:
             x_hat = np.average(x)
             y_hat = np.average(y)
@@ -141,7 +158,7 @@ def compute_dec_vals(G=None, ec_windows=None, P=5):
 	:param G: current graph
 	:param ec_windows: a list of the last P ec_vals for each word
 	:param P: the length of your window
-	:returns 
+	:returns ec_vals: dynaimc eigenvector centralities for each word.
 	"""
 	# update the ec_windows with eigenvector centrality
 	ec_vals = update_ec_windows(G=G, ec_windows=ec_windows, P=P)
@@ -153,6 +170,7 @@ def compute_dec_vals(G=None, ec_windows=None, P=5):
 			slope = calculate_slope(x, y)
 			# slope, intercept, r_value, pvalue, std_err = stats.linregress(x,y)
 
+		# make the ec_value dynamic
 		ec_vals[word]*=slope
 
 	return ec_vals

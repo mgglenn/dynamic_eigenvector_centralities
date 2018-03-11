@@ -2,6 +2,9 @@
 ## Paper / Purpose
 This code serves as an implementation of the work on calculating keywords and their emerging importance outlined here: https://people.cs.clemson.edu/~isafro/papers/dynamic-centralities.pdf
 
+## Results
+The results in the paper have been replicated on the Boston dataset using time intervals of 60 and 15 minutes, located in `boston_examples`.
+
 ## Requirements
 1. All code is run in Python 3.6 (Anaconda 4.3.0)
 2. Data to be processed should be stored in ordered text files (i.e., file1.txt, file2.txt, ... fileN.txt for N intervals, or some other numbered format.)
@@ -12,6 +15,7 @@ This code serves as an implementation of the work on calculating keywords and th
 ```
 # after repo has been downloaded
 cd dynamic_eigenvector_centralities
+pip install requirements.txt
 python dec_main.py --input_folder /home/username/time_series_data/ --P 6 --output_folder /home/username/dec_results/
 ```
 
